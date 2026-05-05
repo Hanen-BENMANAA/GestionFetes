@@ -1,0 +1,77 @@
+@model Fete
+@{
+    ViewData["Title"] = "Modifier la Fête";
+}
+
+<div class="mb-4">
+    <a asp-action="Fetes" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i>Retour
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark fw-bold">
+                <i class="fas fa-edit me-2"></i>Modifier la fête #@Model.IdFete
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditFete" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="IdFete" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Type" class="form-label fw-semibold"></label>
+                            <select asp-for="Type" class="form-select">
+                                @foreach (var t in Enum.GetValues<TypeFete>())
+                                {
+                                    <option value="@t" selected="@(Model.Type == t ? "selected" : null)">@t</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Type" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="IdSalle" class="form-label fw-semibold"></label>
+                            <select asp-for="IdSalle" asp-items="ViewBag.Salles" class="form-select"></select>
+                            <span asp-validation-for="IdSalle" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label asp-for="NbInvitesMax" class="form-label fw-semibold"></label>
+                            <input asp-for="NbInvitesMax" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="NbInvitesMax" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Duree" class="form-label fw-semibold"></label>
+                            <input asp-for="Duree" class="form-control" type="number" min="1" max="72" />
+                            <span asp-validation-for="Duree" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="DateFete" class="form-label fw-semibold"></label>
+                            <input asp-for="DateFete" class="form-control" type="datetime-local"
+                                   value="@Model.DateFete.ToString("yyyy-MM-ddTHH:mm")" />
+                            <span asp-validation-for="DateFete" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-warning text-dark flex-fill">
+                            <i class="fas fa-save me-2"></i>Enregistrer les modifications
+                        </button>
+                        <a asp-action="Fetes" class="btn btn-outline-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

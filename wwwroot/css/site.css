@@ -1,0 +1,125 @@
+/* ===== GLOBAL ===== */
+:root {
+    --primary: #4e73df;
+    --success: #1cc88a;
+    --info: #36b9cc;
+    --warning: #f6c23e;
+    --danger: #e74a3b;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; }
+
+/* ===== NAVBAR ===== */
+.navbar.bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%) !important;
+}
+
+/* ===== FETE CARDS ===== */
+.fete-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px !important;
+}
+
+.fete-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
+}
+
+.card-anniversaire { border-top: 4px solid #4e73df !important; }
+.card-mariage { border-top: 4px solid #e74a3b !important; }
+.card-autre { border-top: 4px solid #1cc88a !important; }
+
+.badge-anniversaire { background-color: #4e73df !important; color: white; }
+.badge-mariage { background-color: #e74a3b !important; color: white; }
+.badge-autre { background-color: #1cc88a !important; color: white; }
+
+.card-header-custom {
+    border-radius: 12px 12px 0 0 !important;
+    background: rgba(0,0,0,0.03);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.detail-item {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+
+/* ===== KPI CARDS ===== */
+.kpi-card {
+    transition: transform 0.2s;
+    border-radius: 10px !important;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* ===== TABLES ===== */
+.table thead th {
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+/* ===== FORMS ===== */
+.form-control, .form-select {
+    border-radius: 8px;
+    transition: border-color 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(78,115,223,.2);
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* ===== CARDS ===== */
+.card {
+    border-radius: 12px !important;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+}
+
+/* ===== INFO BOX ===== */
+.info-box {
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ===== ALERTS ===== */
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+/* ===== BADGES ===== */
+.badge {
+    font-weight: 500;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 576px) {
+    .kpi-card .kpi-value { font-size: 1.5rem !important; }
+}

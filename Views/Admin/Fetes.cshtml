@@ -1,0 +1,80 @@
+@model IEnumerable<Fete>
+@{
+    ViewData["Title"] = "Gestion des Fêtes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fas fa-glass-cheers me-2 text-primary"></i>Gestion des Fêtes</h2>
+        <p class="text-muted mb-0">@Model.Count() fête(s) enregistrée(s)</p>
+    </div>
+    <a asp-action="CreateFete" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Nouvelle Fête
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Durée</th>
+                        <th>Salle</th>
+                        <th>Invités</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var fete in Model)
+                    {
+                        <tr>
+                            <td class="text-muted">#@fete.IdFete</td>
+                            <td class="fw-semibold">@fete.Description</td>
+                            <td>
+                                @{
+                                    var badgeColor = fete.Type switch {
+                                        TypeFete.Anniversaire => "bg-primary",
+                                        TypeFete.Mariage => "bg-danger",
+                                        _ => "bg-secondary"
+                                    };
+                                }
+                                <span class="badge @badgeColor">@fete.Type</span>
+                            </td>
+                            <td>@fete.DateFete.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td><span class="badge bg-light text-dark border">@fete.Duree h</span></td>
+                            <td>@(fete.Salle?.NomSalle ?? "-")</td>
+                            <td>
+                                <span class="text-success fw-semibold">@fete.NbInvitesConfirmes</span>
+                                <span class="text-muted">/@fete.NbInvitesMax</span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@fete.IdFete"
+                                       class="btn btn-sm btn-outline-info" title="Voir">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a asp-action="EditFete" asp-route-id="@fete.IdFete"
+                                       class="btn btn-sm btn-outline-warning" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form asp-action="DeleteFete" asp-route-id="@fete.IdFete" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer"
+                                                onclick="return confirm('Supprimer cette fête ?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

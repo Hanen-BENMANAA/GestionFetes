@@ -1,0 +1,68 @@
+@model Invite
+@{
+    ViewData["Title"] = "Modifier l'Invité";
+}
+
+<div class="mb-4">
+    <a asp-action="Invites" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-arrow-left me-1"></i>Retour
+    </a>
+</div>
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-warning text-dark fw-bold">
+                <i class="fas fa-edit me-2"></i>Modifier l'invité #@Model.IdInvite
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditInvite" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="IdInvite" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Nom" class="form-label fw-semibold"></label>
+                            <input asp-for="Nom" class="form-control" />
+                            <span asp-validation-for="Nom" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Prenom" class="form-label fw-semibold"></label>
+                            <input asp-for="Prenom" class="form-control" />
+                            <span asp-validation-for="Prenom" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DateNaissance" class="form-label fw-semibold"></label>
+                        <input asp-for="DateNaissance" class="form-control" type="date"
+                               value="@Model.DateNaissance.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="DateNaissance" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="AdresseInvite" class="form-label fw-semibold"></label>
+                        <input asp-for="AdresseInvite" class="form-control" />
+                        <span asp-validation-for="AdresseInvite" class="text-danger small"></span>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Telephone" class="form-label fw-semibold"></label>
+                            <input asp-for="Telephone" class="form-control" />
+                            <span asp-validation-for="Telephone" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-warning text-dark flex-fill">
+                            <i class="fas fa-save me-2"></i>Enregistrer
+                        </button>
+                        <a asp-action="Invites" class="btn btn-outline-secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

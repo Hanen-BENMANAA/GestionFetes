@@ -1,0 +1,72 @@
+@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Gestion des Utilisateurs";
+    var userRoles = ViewBag.UserRoles as Dictionary<string, IList<string>>;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fas fa-user-cog me-2 text-secondary"></i>Gestion des Utilisateurs</h2>
+        <p class="text-muted mb-0">@Model.Count() utilisateur(s) enregistré(s)</p>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                        <th>Date d'inscription</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        var roles = userRoles?.ContainsKey(user.Id) == true ? userRoles[user.Id] : new List<string>();
+                        var isAdmin = roles.Contains("Admin");
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center me-2 text-white fw-bold"
+                                         style="width:38px;height:38px;background:@(isAdmin ? "#e74a3b" : "#4e73df");">
+                                        @user.NomComplet.FirstOrDefault()
+                                    </div>
+                                    <div class="fw-semibold">@user.NomComplet</div>
+                                </div>
+                            </td>
+                            <td class="text-muted">@user.Email</td>
+                            <td>
+                                @foreach (var role in roles)
+                                {
+                                    <span class="badge @(role == "Admin" ? "bg-danger" : "bg-primary") me-1">@role</span>
+                                }
+                            </td>
+                            <td class="small text-muted">@user.DateInscription.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (!isAdmin)
+                                {
+                                    <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Supprimer cet utilisateur ?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-muted border">Protégé</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

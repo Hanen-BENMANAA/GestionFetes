@@ -1,0 +1,92 @@
+@model IEnumerable<Invitation>
+@{
+    ViewData["Title"] = "Mes Invitations";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold mb-1"><i class="fas fa-envelope-open me-2 text-primary"></i>Mes Invitations</h2>
+    <p class="text-muted">Gérez vos invitations aux fêtes</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5">
+        <i class="fas fa-envelope text-muted" style="font-size: 4rem;"></i>
+        <h4 class="mt-3 text-muted">Aucune invitation pour le moment</h4>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
+            <i class="fas fa-home me-2"></i>Voir les fêtes
+        </a>
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var inv in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h6 class="fw-bold mb-0">@inv.Fete?.Description</h6>
+                            @if (inv.ConfirmeInvitation)
+                            {
+                                <span class="badge bg-success"><i class="fas fa-check me-1"></i>Confirmée</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark"><i class="fas fa-clock me-1"></i>En attente</span>
+                            }
+                        </div>
+
+                        <div class="text-muted small">
+                            <div class="mb-1">
+                                <i class="fas fa-calendar me-2 text-primary"></i>
+                                @inv.Fete?.DateFete.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                            <div class="mb-1">
+                                <i class="fas fa-building me-2 text-info"></i>
+                                @inv.Fete?.Salle?.NomSalle
+                            </div>
+                            <div class="mb-1">
+                                <i class="fas fa-tag me-2 text-secondary"></i>
+                                @inv.Fete?.Type
+                            </div>
+                            <div>
+                                <i class="fas fa-paper-plane me-2 text-muted"></i>
+                                Invité le @inv.DateInvitation.ToString("dd/MM/yyyy")
+                            </div>
+                            @if (inv.ConfirmeInvitation && inv.DateConfirmation.HasValue)
+                            {
+                                <div class="mt-1 text-success">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    Confirmé le @inv.DateConfirmation.Value.ToString("dd/MM/yyyy")
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pb-3 px-3">
+                        @if (!inv.ConfirmeInvitation)
+                        {
+                            <form asp-action="Confirmer" asp-route-id="@inv.IdInvitation" method="post" class="d-inline w-100">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-success btn-sm w-100">
+                                    <i class="fas fa-check me-1"></i>Confirmer ma présence
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Annuler" asp-route-id="@inv.IdInvitation" method="post" class="d-inline w-100">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100"
+                                        onclick="return confirm('Annuler votre confirmation ?')">
+                                    <i class="fas fa-times me-1"></i>Annuler ma confirmation
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

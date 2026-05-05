@@ -1,0 +1,73 @@
+@model IEnumerable<Invitation>
+@{
+    ViewData["Title"] = "Gestion des Invitations";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fas fa-envelope me-2 text-warning"></i>Gestion des Invitations</h2>
+        <p class="text-muted mb-0">@Model.Count() invitation(s) | @Model.Count(i => i.ConfirmeInvitation) confirmée(s)</p>
+    </div>
+    <a asp-action="CreateInvitation" class="btn btn-warning text-dark">
+        <i class="fas fa-plus me-2"></i>Nouvelle Invitation
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Invité</th>
+                        <th>Fête</th>
+                        <th>Date Invitation</th>
+                        <th>Statut</th>
+                        <th>Date Confirmation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var inv in Model)
+                    {
+                        <tr>
+                            <td class="text-muted">#@inv.IdInvitation</td>
+                            <td>
+                                <div class="fw-semibold">@inv.Invite?.NomComplet</div>
+                                <div class="small text-muted">@inv.Invite?.Email</div>
+                            </td>
+                            <td>
+                                <div class="fw-semibold">@inv.Fete?.Description</div>
+                                <div class="small text-muted">@inv.Fete?.DateFete.ToString("dd/MM/yyyy")</div>
+                            </td>
+                            <td class="small text-muted">@inv.DateInvitation.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                @if (inv.ConfirmeInvitation)
+                                {
+                                    <span class="badge bg-success px-3"><i class="fas fa-check me-1"></i>Confirmée</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark px-3"><i class="fas fa-clock me-1"></i>En attente</span>
+                                }
+                            </td>
+                            <td class="small text-muted">
+                                @(inv.DateConfirmation.HasValue ? inv.DateConfirmation.Value.ToString("dd/MM/yyyy") : "-")
+                            </td>
+                            <td>
+                                <form asp-action="DeleteInvitation" asp-route-id="@inv.IdInvitation" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Supprimer cette invitation ?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

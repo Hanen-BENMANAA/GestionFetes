@@ -1,0 +1,222 @@
+@model StatistiquesViewModel
+@{
+    ViewData["Title"] = "Dashboard Admin";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold mb-1"><i class="fas fa-chart-bar me-2 text-primary"></i>Dashboard Administrateur</h2>
+    <p class="text-muted">Vue d'ensemble de l'application</p>
+</div>
+
+<!-- KPI Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card kpi-card border-0 shadow-sm text-center h-100" style="border-left: 4px solid #4e73df !important;">
+            <div class="card-body">
+                <div class="kpi-icon text-primary mb-2"><i class="fas fa-glass-cheers fa-2x"></i></div>
+                <div class="kpi-value fw-bold fs-2 text-primary">@Model.TotalFetes</div>
+                <div class="kpi-label text-muted small">Total Fêtes</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card kpi-card border-0 shadow-sm text-center h-100" style="border-left: 4px solid #1cc88a !important;">
+            <div class="card-body">
+                <div class="kpi-icon text-success mb-2"><i class="fas fa-users fa-2x"></i></div>
+                <div class="kpi-value fw-bold fs-2 text-success">@Model.TotalInvites</div>
+                <div class="kpi-label text-muted small">Total Invités</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card kpi-card border-0 shadow-sm text-center h-100" style="border-left: 4px solid #36b9cc !important;">
+            <div class="card-body">
+                <div class="kpi-icon text-info mb-2"><i class="fas fa-envelope fa-2x"></i></div>
+                <div class="kpi-value fw-bold fs-2 text-info">@Model.TotalInvitations</div>
+                <div class="kpi-label text-muted small">Invitations</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card kpi-card border-0 shadow-sm text-center h-100" style="border-left: 4px solid #f6c23e !important;">
+            <div class="card-body">
+                <div class="kpi-icon text-warning mb-2"><i class="fas fa-check-circle fa-2x"></i></div>
+                <div class="kpi-value fw-bold fs-2 text-warning">@Model.TotalInvitationsConfirmees</div>
+                <div class="kpi-label text-muted small">Confirmées</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card kpi-card border-0 shadow-sm text-center h-100" style="border-left: 4px solid #e74a3b !important;">
+            <div class="card-body">
+                <div class="kpi-icon text-danger mb-2"><i class="fas fa-building fa-2x"></i></div>
+                <div class="kpi-value fw-bold fs-2 text-danger">@Model.TotalSalles</div>
+                <div class="kpi-label text-muted small">Salles</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card kpi-card border-0 shadow-sm text-center h-100" style="border-left: 4px solid #858796 !important;">
+            <div class="card-body">
+                <div class="kpi-icon text-secondary mb-2"><i class="fas fa-percentage fa-2x"></i></div>
+                <div class="kpi-value fw-bold fs-2 text-secondary">@Model.TauxConfirmation%</div>
+                <div class="kpi-label text-muted small">Taux Confirm.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-5">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white fw-bold border-0 pt-3">
+                <i class="fas fa-chart-pie me-2 text-primary"></i>Fêtes par Type
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center">
+                <canvas id="chartType" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-white fw-bold border-0 pt-3">
+                <i class="fas fa-chart-bar me-2 text-success"></i>Fêtes par Mois
+            </div>
+            <div class="card-body">
+                <canvas id="chartMois" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Row -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white fw-bold border-0 pt-3">
+                <i class="fas fa-trophy me-2 text-warning"></i>Top Salles
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr><th>#</th><th>Salle</th><th>Nb Fêtes</th></tr>
+                        </thead>
+                        <tbody>
+                            @{ int rank = 1; }
+                            @foreach (var s in Model.TopSalles)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-primary">@rank</span></td>
+                                    <td>@s.Salle</td>
+                                    <td><span class="badge bg-success">@s.NbFetes</span></td>
+                                </tr>
+                                rank++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white fw-bold border-0 pt-3">
+                <i class="fas fa-calendar-check me-2 text-info"></i>Prochaine Fête
+            </div>
+            <div class="card-body">
+                @if (Model.ProchainesFete != null)
+                {
+                    <div class="text-center py-2">
+                        <i class="fas fa-champagne-glasses text-primary" style="font-size:3rem;"></i>
+                        <h5 class="mt-3 fw-bold">@Model.ProchainesFete.Description</h5>
+                        <p class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>
+                            @Model.ProchainesFete.DateFete.ToString("dddd dd MMMM yyyy", new System.Globalization.CultureInfo("fr-FR"))
+                        </p>
+                        <span class="badge bg-primary fs-6">@Model.ProchainesFete.Type</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-3">Aucune fête à venir</div>
+                }
+            </div>
+        </div>
+        <div class="card shadow-sm border-0 mt-3">
+            <div class="card-body text-center">
+                <i class="fas fa-money-bill-wave text-success fa-2x mb-2"></i>
+                <div class="fw-bold fs-4 text-success">@Model.RevenuTotal.ToString("N2") DT</div>
+                <div class="text-muted">Revenu total estimé</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Links -->
+<div class="row g-3 mt-2">
+    <div class="col-12"><h5 class="fw-bold text-muted">Accès rapide</h5></div>
+    <div class="col-md-3">
+        <a asp-action="Fetes" class="btn btn-primary w-100 py-3">
+            <i class="fas fa-glass-cheers fa-lg mb-1 d-block"></i>Gérer les Fêtes
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="Salles" class="btn btn-info text-white w-100 py-3">
+            <i class="fas fa-building fa-lg mb-1 d-block"></i>Gérer les Salles
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="Invites" class="btn btn-success w-100 py-3">
+            <i class="fas fa-users fa-lg mb-1 d-block"></i>Gérer les Invités
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a asp-action="Invitations" class="btn btn-warning text-dark w-100 py-3">
+            <i class="fas fa-envelope fa-lg mb-1 d-block"></i>Gérer les Invitations
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Fêtes par Type - Pie Chart
+    const ctxType = document.getElementById('chartType').getContext('2d');
+    new Chart(ctxType, {
+        type: 'doughnut',
+        data: {
+            labels: [@Html.Raw(string.Join(",", Model.FetesParType.Keys.Select(k => $"'{k}'")))],
+            datasets: [{
+                data: [@string.Join(",", Model.FetesParType.Values)],
+                backgroundColor: ['#4e73df', '#e74a3b', '#1cc88a'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // Fêtes par Mois - Bar Chart
+    const ctxMois = document.getElementById('chartMois').getContext('2d');
+    new Chart(ctxMois, {
+        type: 'bar',
+        data: {
+            labels: [@Html.Raw(string.Join(",", Model.FetesParMois.Keys.Select(k => $"'{k}'")))],
+            datasets: [{
+                label: 'Nombre de fêtes',
+                data: [@string.Join(",", Model.FetesParMois.Values)],
+                backgroundColor: 'rgba(78, 115, 223, 0.7)',
+                borderColor: '#4e73df',
+                borderWidth: 1,
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+</script>
+}

@@ -1,0 +1,59 @@
+@model IEnumerable<Salle>
+@{
+    ViewData["Title"] = "Gestion des Salles";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="fas fa-building me-2 text-info"></i>Gestion des Salles</h2>
+        <p class="text-muted mb-0">@Model.Count() salle(s) disponible(s)</p>
+    </div>
+    <a asp-action="CreateSalle" class="btn btn-info text-white">
+        <i class="fas fa-plus me-2"></i>Nouvelle Salle
+    </a>
+</div>
+
+<div class="row g-3">
+    @foreach (var salle in Model)
+    {
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="fw-bold mb-0">@salle.NomSalle</h5>
+                        <span class="badge bg-info text-white">#@salle.IdSalle</span>
+                    </div>
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-map-marker-alt me-2 text-danger"></i>@salle.AddresseSalle
+                    </p>
+                    <div class="row text-center mt-3">
+                        <div class="col-6">
+                            <div class="bg-light rounded p-2">
+                                <div class="fw-bold text-primary">@salle.Capacite</div>
+                                <div class="small text-muted">Capacité</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-light rounded p-2">
+                                <div class="fw-bold text-success">@salle.PrixParHeure DT</div>
+                                <div class="small text-muted">Par heure</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 pb-3 d-flex gap-2">
+                    <a asp-action="EditSalle" asp-route-id="@salle.IdSalle" class="btn btn-sm btn-outline-warning flex-fill">
+                        <i class="fas fa-edit me-1"></i>Modifier
+                    </a>
+                    <form asp-action="DeleteSalle" asp-route-id="@salle.IdSalle" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Supprimer cette salle ?')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

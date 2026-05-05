@@ -6,29 +6,67 @@
     <title>@ViewData["Title"] - GestionFêtes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body { font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif; }
+        .nav-pill-active { background: rgba(255,255,255,0.2) !important; border-radius: 8px; }
+        .user-chip {
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 4px 14px 4px 8px;
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.875rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .user-avatar {
+            width: 28px; height: 28px;
+            background: linear-gradient(135deg, #fcd34d, #f59e0b);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 12px; color: #1f2937;
+        }
+        .footer-brand-text {
+            background: linear-gradient(135deg, #fcd34d, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        .festive-footer {
+            background: linear-gradient(135deg, #0f172a, #1e293b) !important;
+            border-top: 3px solid transparent;
+            border-image: linear-gradient(90deg, #2563eb, #f59e0b, #10b981, #ef4444) 1;
+        }
+        .dropdown-menu { border-radius: 14px !important; overflow: hidden; min-width: 220px; border: 1px solid rgba(0,0,0,0.08) !important; }
+        .dropdown-item { transition: all 0.15s ease; }
+        .dropdown-item:hover { background: rgba(37, 99, 235, 0.07) !important; color: #2563eb !important; border-radius: 8px; }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary">
         <div class="container">
-            <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
-                <i class="fas fa-champagne-glasses me-2"></i>GestionFêtes
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-champagne-glasses"></i>
+                <span>GestionFêtes</span>
+                <span class="badge ms-1 py-1 px-2" style="background:rgba(253,211,77,0.2);color:#fcd34d;font-size:0.6rem;border:1px solid rgba(253,211,77,0.3);">FÊTES</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav me-auto gap-1">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                <i class="fas fa-home me-1"></i>Accueil
+                                <i class="fas fa-house me-1"></i>Accueil
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Search">
-                                <i class="fas fa-search me-1"></i>Rechercher
+                                <i class="fas fa-magnifying-glass me-1"></i>Rechercher
                             </a>
                         </li>
                         <li class="nav-item">
@@ -40,36 +78,47 @@
                         {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                    <i class="fas fa-cog me-1"></i>Administration
+                                    <i class="fas fa-sliders me-1"></i>Administration
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-chart-bar me-2"></i>Dashboard</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Fetes"><i class="fas fa-glass-cheers me-2"></i>Fêtes</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Salles"><i class="fas fa-building me-2"></i>Salles</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Invites"><i class="fas fa-users me-2"></i>Invités</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Invitations"><i class="fas fa-envelope-open me-2"></i>Invitations</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Users"><i class="fas fa-user-cog me-2"></i>Utilisateurs</a></li>
+                                <ul class="dropdown-menu shadow p-2">
+                                    <li class="px-1 pt-1 pb-1">
+                                        <span class="text-muted d-block px-2 mb-1" style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Vue d'ensemble</span>
+                                    </li>
+                                    <li><a class="dropdown-item py-2 px-3" asp-controller="Admin" asp-action="Dashboard"><i class="fas fa-chart-bar me-2 text-primary"></i>Dashboard</a></li>
+                                    <li><hr class="dropdown-divider my-1"></li>
+                                    <li class="px-1 pt-1 pb-1">
+                                        <span class="text-muted d-block px-2 mb-1" style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Gestion</span>
+                                    </li>
+                                    <li><a class="dropdown-item py-2 px-3" asp-controller="Admin" asp-action="Fetes"><i class="fas fa-champagne-glasses me-2 text-primary"></i>Fêtes</a></li>
+                                    <li><a class="dropdown-item py-2 px-3" asp-controller="Admin" asp-action="Salles"><i class="fas fa-building me-2 text-info"></i>Salles</a></li>
+                                    <li><a class="dropdown-item py-2 px-3" asp-controller="Admin" asp-action="Invites"><i class="fas fa-users me-2 text-success"></i>Invités</a></li>
+                                    <li><a class="dropdown-item py-2 px-3" asp-controller="Admin" asp-action="Invitations"><i class="fas fa-envelope-open me-2 text-warning"></i>Invitations</a></li>
+                                    <li><hr class="dropdown-divider my-1"></li>
+                                    <li><a class="dropdown-item py-2 px-3" asp-controller="Admin" asp-action="Users"><i class="fas fa-user-gear me-2 text-danger"></i>Utilisateurs</a></li>
                                 </ul>
                             </li>
                         }
                     </ul>
-                    <div class="navbar-nav">
-                        <span class="nav-link text-warning">
-                            <i class="fas fa-user-circle me-1"></i>@User.Identity.Name
-                            @if (User.IsInRole("Admin")) { <span class="badge bg-danger ms-1">Admin</span> }
-                        </span>
-                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-outline-light btn-sm ms-2">
-                                <i class="fas fa-sign-out-alt me-1"></i>Déconnexion
+                    <div class="navbar-nav d-flex flex-row align-items-center gap-2">
+                        <div class="user-chip text-white">
+                            <div class="user-avatar">@User.Identity?.Name?.FirstOrDefault()</div>
+                            <span>@User.Identity?.Name</span>
+                            @if (User.IsInRole("Admin")) {
+                                <span class="badge py-1 px-2" style="background:rgba(239,68,68,0.75);font-size:0.65rem;">Admin</span>
+                            }
+                        </div>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm text-white"
+                                    style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 12px;font-weight:600;">
+                                <i class="fas fa-arrow-right-from-bracket me-1"></i>Quitter
                             </button>
                         </form>
                     </div>
                 }
                 else
                 {
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto gap-1">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Account" asp-action="Login">
                                 <i class="fas fa-sign-in-alt me-1"></i>Connexion
@@ -91,21 +140,21 @@
             @if (TempData["Success"] != null)
             {
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                    <i class="fas fa-circle-check me-2"></i>@TempData["Success"]
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
             @if (TempData["Info"] != null)
             {
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="fas fa-info-circle me-2"></i>@TempData["Info"]
+                    <i class="fas fa-circle-info me-2"></i>@TempData["Info"]
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
             @if (TempData["Error"] != null)
             {
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle me-2"></i>@TempData["Error"]
+                    <i class="fas fa-circle-exclamation me-2"></i>@TempData["Error"]
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             }
@@ -113,9 +162,25 @@
         </div>
     </main>
 
-    <footer class="footer bg-dark text-light py-3 mt-auto">
-        <div class="container text-center">
-            <span class="text-muted">© 2024 GestionFêtes - Mini Projet DOTNET</span>
+    <footer class="footer festive-footer text-light py-4 mt-auto">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center text-md-start mb-2 mb-md-0">
+                    <span class="footer-brand-text"><i class="fas fa-champagne-glasses me-1"></i>GestionFêtes</span>
+                    <span class="text-muted ms-2 small">© 2024</span>
+                </div>
+                <div class="col-md-4 text-center mb-2 mb-md-0">
+                    <span class="text-muted small">Mini Projet .NET — ASP.NET Core MVC</span>
+                </div>
+                <div class="col-md-4 text-center text-md-end d-flex gap-2 justify-content-center justify-content-md-end">
+                    <span class="badge py-1 px-2" style="background:rgba(37,99,235,0.25);color:#93c5fd;border:1px solid rgba(37,99,235,0.3);font-size:0.72rem;">
+                        <i class="fas fa-layer-group me-1"></i>Repository Pattern
+                    </span>
+                    <span class="badge py-1 px-2" style="background:rgba(16,185,129,0.25);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3);font-size:0.72rem;">
+                        <i class="fas fa-database me-1"></i>SQLite
+                    </span>
+                </div>
+            </div>
         </div>
     </footer>
 
